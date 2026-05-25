@@ -329,9 +329,74 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
   .topbar{padding:0 14px}
   .nav-tabs{padding:10px 14px 0}
 }
+
+/* ══ NOTIFICATION SYSTEM ══ */
+.notif-permission-bar {
+  display:none; position:fixed; top:56px; left:0; right:0; z-index:200;
+  background:linear-gradient(135deg,rgba(34,197,94,.15),rgba(34,197,94,.05));
+  border-bottom:1px solid rgba(34,197,94,.3);
+  padding:10px 20px; display:flex; align-items:center; justify-content:space-between; gap:12px;
+}
+.notif-permission-bar.hidden { display:none!important; }
+.notif-perm-text { font-size:12px; color:var(--text); }
+.notif-perm-text span { color:var(--accent); font-weight:600; }
+.btn-enable-notif {
+  padding:7px 16px; background:var(--accent); color:#000;
+  border:none; border-radius:8px; font-family:'Syne',sans-serif;
+  font-size:12px; font-weight:700; cursor:pointer; white-space:nowrap;
+  transition:all .2s;
+}
+.btn-enable-notif:hover { background:var(--accent-dim); }
+.btn-dismiss-notif {
+  background:none; border:none; color:var(--muted); cursor:pointer; font-size:16px; padding:4px;
+}
+/* Notification bell indicator */
+.notif-bell {
+  width:32px; height:32px; border-radius:8px; background:var(--surface2);
+  border:1px solid var(--border); display:flex; align-items:center; justify-content:center;
+  cursor:pointer; position:relative; transition:all .2s; font-size:14px;
+}
+.notif-bell:hover { border-color:var(--accent); }
+.notif-bell .badge {
+  position:absolute; top:-4px; right:-4px; width:14px; height:14px;
+  background:var(--danger); border-radius:50%; font-size:9px; color:#fff;
+  display:flex; align-items:center; justify-content:center; font-weight:700;
+  display:none;
+}
+.notif-bell .badge.show { display:flex; }
+/* Notification dropdown */
+.notif-dropdown {
+  position:fixed; top:60px; right:16px; width:300px; z-index:300;
+  background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-lg);
+  box-shadow:0 8px 32px rgba(0,0,0,.5); display:none; animation:fadeUp .2s ease;
+}
+.notif-dropdown.show { display:block; }
+.notif-drop-head { padding:14px 16px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; }
+.notif-drop-head h4 { font-family:'Syne',sans-serif; font-size:13px; font-weight:700; }
+.btn-clear-notifs { background:none; border:none; color:var(--muted); font-size:11px; cursor:pointer; }
+.notif-list { max-height:280px; overflow-y:auto; }
+.notif-item { padding:12px 16px; border-bottom:1px solid var(--border); display:flex; gap:10px; }
+.notif-item:last-child { border-bottom:none; }
+.notif-item-icon { font-size:16px; flex-shrink:0; margin-top:2px; }
+.notif-item-body { flex:1; }
+.notif-item-title { font-size:12px; font-weight:600; color:var(--text); }
+.notif-item-msg { font-size:11px; color:var(--muted); margin-top:2px; line-height:1.4; }
+.notif-item-time { font-size:10px; color:var(--muted2); margin-top:3px; }
+.notif-empty { padding:24px; text-align:center; color:var(--muted2); font-size:12px; }
+
   </style>
 </head>
 <body>
+
+
+<!-- NOTIFICATION PERMISSION BAR -->
+<div class="notif-permission-bar hidden" id="notifBar">
+  <div class="notif-perm-text">🔔 Enable <span>notifications</span> to get task reminders</div>
+  <div style="display:flex;gap:8px;align-items:center;">
+    <button class="btn-enable-notif" onclick="requestNotifPermission()">Enable</button>
+    <button class="btn-dismiss-notif" onclick="dismissNotifBar()">×</button>
+  </div>
+</div>
 
 <div id="loadScreen">
   <div class="load-ring"></div>
@@ -347,6 +412,10 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
   <div class="topbar-right">
     <div class="time-display" id="clockDisplay">00:00</div>
     <div class="block-badge sync" id="blockBadge">SYNC</div>
+    <div class="notif-bell" id="notifBell" onclick="toggleNotifDropdown()">
+      🔔
+      <div class="badge" id="notifBadge"></div>
+    </div>
     <button class="btn-logout" onclick="logout()">Sign out</button>
   </div>
 </div>
@@ -1308,6 +1377,219 @@ function subscribeRealtime(){
 }
 
 // ── BOOT ──
+// ══════════════════════════════════════════
+// NOTIFICATION SYSTEM
+// ══════════════════════════════════════════
+
+let swReg = null;
+let notifHistory = [];
+let notifScheduled = {};  // tag -> timeoutId
+
+// ── CORE SCHEDULE (both users notified) ──
+const CORE_SCHEDULE = [
+  { tag:'leave_lodge',   hour:21, min:45, title:'🏃 HM OS — Time to move',      body:'Leave the lodge now. Campus in 15 mins. Router in bag.' },
+  { tag:'sync_block',    hour:23, min:0,  title:'📋 HM OS — Sync & Ledger',      body:'You're on campus. Open HM OS. Log the day, check finances.' },
+  { tag:'core_block',    hour:0,  min:0,  title:'🎯 HM OS — CORE BLOCK STARTS',  body:'OUTREACH FIRST. Find prospects → send emails. No skipping.' },
+  { tag:'outreach_warn', hour:1,  min:0,  title:'📧 HM OS — Outreach check',     body:'1 hour in. Have you sent tonight's emails? Don't skip.' },
+  { tag:'dev_reminder',  hour:2,  min:0,  title:'💻 HM OS — Dev session',        body:'Outreach done? Switch to Python/Django now.' },
+  { tag:'reading_time',  hour:4,  min:0,  title:'📖 HM OS — Reading slot',       body:'30 min reading before you head home. Check the rotator.' },
+  { tag:'wrap_up',       hour:4,  min:30, title:'🏠 HM OS — Head home',          body:'Good work. Trek home and get recovery sleep.' },
+];
+
+// ── SERVICE WORKER REGISTRATION ──
+async function registerSW() {
+  if (!('serviceWorker' in navigator)) return;
+  try {
+    swReg = await navigator.serviceWorker.register('./service-worker.js');
+    console.log('SW registered');
+  } catch(e) { console.warn('SW registration failed:', e); }
+}
+
+// ── NOTIFICATION PERMISSION ──
+function checkNotifPermission() {
+  if (!('Notification' in window)) return;
+  const dismissed = localStorage.getItem('hmos_notif_dismissed');
+  if (dismissed) return;
+  if (Notification.permission === 'default') {
+    document.getElementById('notifBar').classList.remove('hidden');
+  } else if (Notification.permission === 'granted') {
+    scheduleAllNotifications();
+  }
+}
+
+async function requestNotifPermission() {
+  const perm = await Notification.requestPermission();
+  document.getElementById('notifBar').classList.add('hidden');
+  if (perm === 'granted') {
+    toast('Notifications enabled ✓', 'success');
+    scheduleAllNotifications();
+  } else {
+    toast('Notifications blocked — enable in browser settings', 'error');
+  }
+}
+
+function dismissNotifBar() {
+  document.getElementById('notifBar').classList.add('hidden');
+  localStorage.setItem('hmos_notif_dismissed', '1');
+}
+
+// ── SCHEDULE ALL NOTIFICATIONS ──
+function scheduleAllNotifications() {
+  if (Notification.permission !== 'granted') return;
+
+  // Clear existing scheduled
+  Object.values(notifScheduled).forEach(id => clearTimeout(id));
+  notifScheduled = {};
+
+  // Schedule core block reminders (every day, Sun-Fri)
+  const today = new Date().getDay(); // 0=Sun, 6=Sat
+  if (today !== 6) { // not Saturday
+    CORE_SCHEDULE.forEach(s => scheduleOneNotif(s));
+  }
+
+  // Schedule personal task notifications
+  schedulePersonalTaskNotifs();
+}
+
+function scheduleOneNotif({ tag, hour, min, title, body }) {
+  const now = new Date();
+  const target = new Date();
+  target.setHours(hour, min, 0, 0);
+
+  // If time already passed today, don't schedule
+  if (target <= now) return;
+
+  const delay = target - now;
+
+  const id = setTimeout(() => {
+    fireNotification(title, body, tag);
+    addToNotifHistory(title, body);
+  }, delay);
+
+  notifScheduled[tag] = id;
+
+  // Also schedule via service worker for background delivery
+  if (swReg && navigator.serviceWorker.controller) {
+    navigator.serviceWorker.controller.postMessage({
+      type: 'SCHEDULE_NOTIFICATION',
+      title, body, delay, tag
+    });
+  }
+}
+
+function schedulePersonalTaskNotifs() {
+  const today = getDayAbbr(new Date());
+  const myTasks = customTasks[currentUser] || [];
+
+  myTasks.forEach(task => {
+    if (!task.time_start) return;
+    if (task.days && task.days.length > 0 && !task.days.includes(today)) return;
+
+    const [hh, mm] = task.time_start.split(':').map(Number);
+    const tag = `personal_${task.id}`;
+
+    scheduleOneNotif({
+      tag,
+      hour: hh,
+      min: mm,
+      title: `⏰ HM OS — ${task.title}`,
+      body: `Time for: ${task.title}${task.time_end ? ' until ' + task.time_end : ''}`
+    });
+  });
+}
+
+// ── FIRE A NOTIFICATION ──
+function fireNotification(title, body, tag) {
+  if (Notification.permission !== 'granted') return;
+
+  // Try service worker notification (shows even in background)
+  if (swReg) {
+    swReg.showNotification(title, {
+      body,
+      icon: './icon-192.png',
+      badge: './icon-192.png',
+      vibrate: [200, 100, 200],
+      tag: tag || 'hmos',
+      requireInteraction: false
+    });
+  } else {
+    // Fallback to basic notification
+    new Notification(title, { body, icon: './icon-192.png' });
+  }
+}
+
+// ── IN-APP NOTIFICATION HISTORY ──
+function addToNotifHistory(title, body) {
+  const now = new Date();
+  const timeStr = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+  notifHistory.unshift({ title, body, time: timeStr });
+  if (notifHistory.length > 20) notifHistory.pop();
+  renderNotifDropdown();
+  updateNotifBadge();
+}
+
+function renderNotifDropdown() {
+  const el = document.getElementById('notifList');
+  if (!notifHistory.length) {
+    el.innerHTML = '<div class="notif-empty">No notifications yet</div>';
+    return;
+  }
+  el.innerHTML = notifHistory.map(n => `
+  <div class="notif-item">
+    <div class="notif-item-icon">🔔</div>
+    <div class="notif-item-body">
+      <div class="notif-item-title">${n.title.replace('HM OS — ','')}</div>
+      <div class="notif-item-msg">${n.body}</div>
+      <div class="notif-item-time">${n.time}</div>
+    </div>
+  </div>`).join('');
+}
+
+let unreadCount = 0;
+function updateNotifBadge() {
+  unreadCount++;
+  const badge = document.getElementById('notifBadge');
+  badge.textContent = unreadCount > 9 ? '9+' : unreadCount;
+  badge.classList.add('show');
+}
+
+function toggleNotifDropdown() {
+  const dd = document.getElementById('notifDropdown');
+  dd.classList.toggle('show');
+  if (dd.classList.contains('show')) {
+    // Reset unread count
+    unreadCount = 0;
+    document.getElementById('notifBadge').classList.remove('show');
+    renderNotifDropdown();
+  }
+}
+
+function clearNotifs() {
+  notifHistory = [];
+  renderNotifDropdown();
+}
+
+// Close dropdown when clicking outside
+document.addEventListener('click', e => {
+  const dd = document.getElementById('notifDropdown');
+  const bell = document.getElementById('notifBell');
+  if (dd && bell && !dd.contains(e.target) && !bell.contains(e.target)) {
+    dd.classList.remove('show');
+  }
+});
+
+// ── RESCHEDULE ON MIDNIGHT ──
+function scheduleMidnightReschedule() {
+  const now = new Date();
+  const midnight = new Date();
+  midnight.setHours(24, 0, 1, 0); // 1 second after midnight
+  const delay = midnight - now;
+  setTimeout(() => {
+    scheduleAllNotifications();
+    scheduleMidnightReschedule(); // reschedule for next midnight
+  }, delay);
+}
+
 function setLoadMsg(msg){ const el=document.querySelector('.load-text'); if(el) el.textContent=msg; }
 
 function showDashboard(){
@@ -1325,7 +1607,7 @@ async function boot(){
     if(!session){ window.location.href='index.html'; return; }
 
     setLoadMsg('LOADING STATE…');
-    const emailMap={'zidyep@hmos.local':'zidyep','ebewe@hmos.local':'ebewe'};
+    const emailMap={'zidyep@hmos.local':'zidyep','ebere@hmos.local':'ebewe'};
     const emailUser=emailMap[session.user.email];
     if(emailUser){ currentUser=emailUser; sessionStorage.setItem('hmos_user',emailUser); }
     currentUserId=session.user.id;
@@ -1338,6 +1620,10 @@ async function boot(){
 
     renderAll();
     showDashboard();
+    // Notifications
+    await registerSW();
+    checkNotifPermission();
+    scheduleMidnightReschedule();
 
     // Background: resolve partner ID
     try{
@@ -1351,7 +1637,7 @@ async function boot(){
       }
     }catch{}
 
-    try{ await loadCustomTasks(); USERS.forEach(u=>renderCustomTasks(u)); }catch(e){ console.warn('Custom tasks failed',e); }
+    try{ await loadCustomTasks(); USERS.forEach(u=>renderCustomTasks(u)); schedulePersonalTaskNotifs(); }catch(e){ console.warn('Custom tasks failed',e); }
     try{ await loadLearning(); }catch(e){ console.warn('Learning failed',e); }
     try{ await logVisit(); }catch(e){ console.warn('Visit log failed',e); }
     subscribeRealtime();
@@ -1363,11 +1649,27 @@ async function boot(){
     try{ document.getElementById('topLogo').src=LOGO_SRC; }catch{}
     renderAll();
     showDashboard();
+    // Notifications
+    await registerSW();
+    checkNotifPermission();
+    scheduleMidnightReschedule();
     toast('Loaded offline','warn');
   }
 }
 
 boot();
 </script>
+
+<!-- NOTIFICATION DROPDOWN -->
+<div class="notif-dropdown" id="notifDropdown">
+  <div class="notif-drop-head">
+    <h4>Notifications</h4>
+    <button class="btn-clear-notifs" onclick="clearNotifs()">Clear all</button>
+  </div>
+  <div class="notif-list" id="notifList">
+    <div class="notif-empty">No notifications yet</div>
+  </div>
+</div>
+
 </body>
 </html>
