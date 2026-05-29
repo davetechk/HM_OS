@@ -812,8 +812,8 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
     <div class="ol-pagination">
       <div class="ol-page-info" id="ol-page-info">0 prospects</div>
       <div class="ol-page-btns">
-        <button class="ol-page-btn" id="ol-prev" onclick="olPage(-1)" disabled>← Prev</button>
-        <button class="ol-page-btn" id="ol-next" onclick="olPage(1)" disabled>Next →</button>
+        <button class="ol-page-btn" id="ol-prev" onclick="olPageNav(-1)" disabled>← Prev</button>
+        <button class="ol-page-btn" id="ol-next" onclick="olPageNav(1)" disabled>Next →</button>
       </div>
     </div>
   </div>
@@ -1772,7 +1772,7 @@ function updatePagination(total) {
   document.getElementById('ol-next').disabled = end >= total;
 }
 
-function olPage(dir) {
+function olPageNav(dir) {
   olPage = Math.max(0, olPage + dir);
   loadProspects();
 }
