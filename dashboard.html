@@ -384,6 +384,116 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
 .notif-item-time { font-size:10px; color:var(--muted2); margin-top:3px; }
 .notif-empty { padding:24px; text-align:center; color:var(--muted2); font-size:12px; }
 
+
+/* ══ OUTREACH LOG ══ */
+.ol-stat-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:20px; }
+.ol-stat { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-lg); padding:16px; text-align:center; animation:fadeUp .4s ease both; }
+.ol-stat-num { font-family:'Syne',sans-serif; font-size:32px; font-weight:800; color:var(--accent); line-height:1; margin-bottom:6px; }
+.ol-stat-label { font-size:10px; color:var(--muted); letter-spacing:.1em; text-transform:uppercase; }
+
+.ol-action-bar { display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-bottom:16px; }
+.ol-search { flex:1; min-width:180px; background:var(--surface); border:1px solid var(--border); border-radius:10px; color:var(--text); font-family:'DM Sans',sans-serif; font-size:14px; padding:10px 14px; outline:none; transition:border-color .2s; }
+.ol-search:focus { border-color:var(--accent); }
+.ol-filter-chips { display:flex; gap:6px; flex-wrap:wrap; }
+.chip { padding:5px 12px; border-radius:99px; border:1px solid var(--border); background:var(--surface); color:var(--muted); font-size:11px; font-weight:600; cursor:pointer; transition:all .2s; font-family:'Syne',sans-serif; white-space:nowrap; }
+.chip:hover { border-color:var(--border-hi); color:var(--text); }
+.chip.active { background:var(--accent-glow); border-color:var(--accent); color:var(--accent); }
+.chip.followup { background:rgba(245,158,11,.1); border-color:rgba(245,158,11,.3); color:var(--warn); }
+.chip.followup.active { background:rgba(245,158,11,.2); }
+.market-toggle { display:flex; border:1px solid var(--border); border-radius:8px; overflow:hidden; }
+.market-btn { padding:6px 14px; background:none; border:none; color:var(--muted); font-size:12px; font-weight:600; cursor:pointer; font-family:'Syne',sans-serif; transition:all .2s; }
+.market-btn.active { background:var(--accent); color:#000; }
+.btn-add-prospect { padding:9px 16px; background:var(--accent); color:#000; border:none; border-radius:9px; font-family:'Syne',sans-serif; font-size:12px; font-weight:700; letter-spacing:.06em; cursor:pointer; white-space:nowrap; transition:all .2s; }
+.btn-add-prospect:hover { background:var(--accent-dim); }
+.btn-bulk-import { padding:9px 14px; background:var(--surface2); border:1px solid var(--border); border-radius:9px; color:var(--muted); font-family:'DM Sans',sans-serif; font-size:12px; cursor:pointer; white-space:nowrap; transition:all .2s; }
+.btn-bulk-import:hover { border-color:var(--accent); color:var(--accent); }
+
+/* Table */
+.ol-table-wrap { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-lg); overflow:hidden; }
+.ol-table-head { display:grid; grid-template-columns:2fr 80px 130px 100px 120px; gap:0; padding:10px 16px; border-bottom:1px solid var(--border); }
+.ol-th { font-size:10px; color:var(--muted); letter-spacing:.1em; text-transform:uppercase; font-family:'Syne',sans-serif; font-weight:700; }
+.ol-body { }
+.ol-row { border-bottom:1px solid var(--border); transition:background .15s; cursor:pointer; }
+.ol-row:last-child { border-bottom:none; }
+.ol-row:hover { background:var(--surface2); }
+.ol-row-main { display:grid; grid-template-columns:2fr 80px 130px 100px 120px; gap:0; padding:12px 16px; align-items:center; }
+.ol-biz-name { font-size:13px; font-weight:600; color:var(--text); line-height:1.2; }
+.ol-owner { font-size:11px; color:var(--muted); margin-top:2px; }
+.ol-market-chip { display:inline-block; padding:2px 8px; border-radius:99px; font-size:10px; font-weight:700; font-family:'Syne',sans-serif; }
+.ol-market-chip.uk { background:rgba(59,130,246,.15); color:var(--blue); border:1px solid rgba(59,130,246,.3); }
+.ol-market-chip.us { background:rgba(168,85,247,.15); color:var(--purple); border:1px solid rgba(168,85,247,.3); }
+.ol-days { font-size:12px; font-family:'Syne',sans-serif; font-weight:600; }
+.ol-days.due { color:var(--warn); }
+.ol-days.fine { color:var(--muted); }
+.ol-quick-actions { display:flex; gap:4px; }
+.ol-qa-btn { padding:4px 8px; border-radius:6px; border:1px solid var(--border); background:none; color:var(--muted); font-size:10px; font-weight:600; cursor:pointer; transition:all .15s; font-family:'Syne',sans-serif; white-space:nowrap; }
+.ol-qa-btn:hover { border-color:var(--accent); color:var(--accent); }
+.ol-qa-btn.replied { border-color:rgba(245,158,11,.4); color:var(--warn); }
+.ol-qa-btn.positive { border-color:rgba(34,197,94,.4); color:var(--accent); }
+.ol-qa-btn.dead { border-color:rgba(239,68,68,.4); color:var(--danger); }
+
+/* Expand panel */
+.ol-expand { display:none; padding:14px 16px; background:var(--bg); border-top:1px solid var(--border); }
+.ol-expand.show { display:block; animation:fadeUp .2s ease; }
+.ol-expand-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:12px; }
+.ol-field { }
+.ol-field label { font-size:10px; color:var(--muted); letter-spacing:.08em; text-transform:uppercase; display:block; margin-bottom:3px; }
+.ol-field span { font-size:12px; color:var(--text); }
+.ol-notes-input { width:100%; background:var(--surface); border:1px solid var(--border); border-radius:8px; color:var(--text); font-family:'DM Sans',sans-serif; font-size:12px; padding:8px 10px; outline:none; resize:none; min-height:50px; transition:border-color .2s; }
+.ol-notes-input:focus { border-color:var(--accent); }
+.ol-followup-flags { display:flex; gap:8px; margin-top:8px; }
+.ol-fu-flag { padding:4px 10px; border-radius:6px; font-size:11px; font-weight:600; border:1px solid var(--border); background:var(--surface); color:var(--muted); cursor:pointer; font-family:'Syne',sans-serif; transition:all .2s; }
+.ol-fu-flag.sent { background:rgba(34,197,94,.1); border-color:var(--accent); color:var(--accent); }
+.ol-fu-flag.due { background:var(--warn-glow); border-color:var(--warn); color:var(--warn); }
+
+/* Status chips */
+.status-chip { display:inline-block; padding:3px 10px; border-radius:99px; font-size:11px; font-weight:700; font-family:'Syne',sans-serif; white-space:nowrap; }
+.sc-queued   { background:rgba(107,114,128,.15); color:var(--muted); border:1px solid var(--border); }
+.sc-sent     { background:rgba(59,130,246,.15); color:var(--blue); border:1px solid rgba(59,130,246,.3); }
+.sc-replied  { background:rgba(245,158,11,.15); color:var(--warn); border:1px solid rgba(245,158,11,.3); }
+.sc-positive_reply { background:rgba(34,197,94,.15); color:var(--accent); border:1px solid rgba(34,197,94,.3); }
+.sc-negative { background:rgba(239,68,68,.1); color:#fca5a5; border:1px solid rgba(239,68,68,.2); }
+.sc-bounced  { background:rgba(249,115,22,.15); color:#fb923c; border:1px solid rgba(249,115,22,.3); }
+.sc-signed_up{ background:rgba(20,184,166,.15); color:#2dd4bf; border:1px solid rgba(20,184,166,.3); }
+.sc-paying   { background:rgba(34,197,94,.25); color:#4ade80; border:1px solid rgba(34,197,94,.4); }
+.sc-dead     { background:rgba(55,65,81,.3); color:#6b7280; border:1px solid var(--border); }
+
+.ol-empty { padding:48px; text-align:center; color:var(--muted2); font-size:13px; }
+.ol-pagination { display:flex; align-items:center; justify-content:space-between; padding:12px 16px; border-top:1px solid var(--border); }
+.ol-page-info { font-size:12px; color:var(--muted); }
+.ol-page-btns { display:flex; gap:6px; }
+.ol-page-btn { padding:5px 12px; border:1px solid var(--border); border-radius:7px; background:none; color:var(--muted); font-size:12px; cursor:pointer; transition:all .2s; }
+.ol-page-btn:hover:not(:disabled) { border-color:var(--accent); color:var(--accent); }
+.ol-page-btn:disabled { opacity:.3; cursor:not-allowed; }
+
+/* Modals */
+.ol-modal { max-width:520px; }
+.ol-modal-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.ol-modal-field { display:flex; flex-direction:column; gap:5px; }
+.ol-modal-field.full { grid-column:1/-1; }
+.ol-modal-field label { font-size:10px; color:var(--muted); letter-spacing:.08em; text-transform:uppercase; }
+.ol-modal-field input, .ol-modal-field select, .ol-modal-field textarea {
+  background:var(--bg); border:1px solid var(--border); border-radius:8px;
+  color:var(--text); font-family:'DM Sans',sans-serif; font-size:13px;
+  padding:9px 10px; outline:none; transition:border-color .2s; -webkit-appearance:none;
+}
+.ol-modal-field input:focus, .ol-modal-field select:focus, .ol-modal-field textarea:focus { border-color:var(--accent); }
+.ol-modal-field textarea { resize:vertical; min-height:60px; }
+.ol-dup-warn { padding:10px 14px; background:var(--warn-glow); border:1px solid rgba(245,158,11,.3); border-radius:8px; color:var(--warn); font-size:12px; margin-top:8px; display:none; }
+.ol-dup-warn.show { display:block; }
+.bulk-textarea { width:100%; background:var(--bg); border:1px solid var(--border); border-radius:8px; color:var(--text); font-family:'DM Sans',sans-serif; font-size:12px; padding:10px; outline:none; min-height:120px; resize:vertical; transition:border-color .2s; }
+.bulk-textarea:focus { border-color:var(--accent); }
+.bulk-result { margin-top:10px; font-size:12px; color:var(--muted); }
+
+@media(max-width:900px){
+  .ol-stat-grid { grid-template-columns:repeat(2,1fr); }
+  .ol-table-head { display:none; }
+  .ol-row-main { grid-template-columns:1fr auto; grid-template-rows:auto auto; gap:8px; }
+  .ol-market-chip-wrap { display:none; }
+  .ol-days-wrap { display:none; }
+  .ol-expand-grid { grid-template-columns:1fr 1fr; }
+}
+
   </style>
 </head>
 <body>
@@ -428,6 +538,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
   <button class="tab-btn" onclick="switchTab('ledger')">🤝 Shared</button>
   <button class="tab-btn" onclick="switchTab('learning')">📚 Learning</button>
   <button class="tab-btn" onclick="switchTab('telemetry')">📊 Telemetry</button>
+  <button class="tab-btn" onclick="switchTab('outreach-log')">🎯 Prospects</button>
   <button class="tab-btn" onclick="switchTab('incubator')">🎮 Hub</button>
 </div>
 
@@ -651,6 +762,63 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
   </div>
 </div>
 
+
+<!-- ══ TAB: OUTREACH LOG ══ -->
+<div class="tab-panel" id="tab-outreach-log">
+  <div class="sec-head"><span class="dot"></span><h2>Outreach Log — Prospect Tracker</h2></div>
+
+  <!-- Stat cards -->
+  <div class="ol-stat-grid">
+    <div class="ol-stat"><div class="ol-stat-num" id="ol-queued">0</div><div class="ol-stat-label">Queued Tonight</div></div>
+    <div class="ol-stat"><div class="ol-stat-num" id="ol-sent-today">0</div><div class="ol-stat-label">Sent Today</div></div>
+    <div class="ol-stat"><div class="ol-stat-num" id="ol-replies-today">0</div><div class="ol-stat-label">Replies Today</div></div>
+    <div class="ol-stat"><div class="ol-stat-num" id="ol-signed-week">0</div><div class="ol-stat-label">Signed Up This Week</div></div>
+  </div>
+
+  <!-- Action bar -->
+  <div class="ol-action-bar">
+    <input class="ol-search" type="text" id="ol-search" placeholder="Search business or email…" oninput="olSearch()"/>
+    <div class="ol-filter-chips">
+      <div class="chip active" data-filter="all" onclick="olFilter(this)">All</div>
+      <div class="chip followup" data-filter="followup" onclick="olFilter(this)">⚡ Follow-ups Due</div>
+      <div class="chip" data-filter="queued" onclick="olFilter(this)">Queued</div>
+      <div class="chip" data-filter="sent" onclick="olFilter(this)">Sent</div>
+      <div class="chip" data-filter="replied" onclick="olFilter(this)">Replied</div>
+      <div class="chip" data-filter="positive_reply" onclick="olFilter(this)">Positive</div>
+      <div class="chip" data-filter="signed_up,paying" onclick="olFilter(this)">Signed Up</div>
+      <div class="chip" data-filter="dead" onclick="olFilter(this)">Dead</div>
+    </div>
+    <div class="market-toggle">
+      <button class="market-btn active" id="mkt-all" onclick="olMarket('all',this)">All</button>
+      <button class="market-btn" id="mkt-uk" onclick="olMarket('UK',this)">UK</button>
+      <button class="market-btn" id="mkt-us" onclick="olMarket('US',this)">US</button>
+    </div>
+    <button class="btn-add-prospect" onclick="openAddProspect()">+ Add Prospect</button>
+    <button class="btn-bulk-import" onclick="openBulkImport()">+ Bulk Import</button>
+  </div>
+
+  <!-- Table -->
+  <div class="ol-table-wrap">
+    <div class="ol-table-head">
+      <div class="ol-th">Business</div>
+      <div class="ol-th">Market</div>
+      <div class="ol-th">Status</div>
+      <div class="ol-th">Last Contact</div>
+      <div class="ol-th">Actions</div>
+    </div>
+    <div class="ol-body" id="ol-body">
+      <div class="ol-empty">Loading prospects…</div>
+    </div>
+    <div class="ol-pagination">
+      <div class="ol-page-info" id="ol-page-info">0 prospects</div>
+      <div class="ol-page-btns">
+        <button class="ol-page-btn" id="ol-prev" onclick="olPage(-1)" disabled>← Prev</button>
+        <button class="ol-page-btn" id="ol-next" onclick="olPage(1)" disabled>Next →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- ══ TAB: INCUBATOR ══ -->
 <div class="tab-panel" id="tab-incubator">
   <div class="sec-head"><span class="dot"></span><h2>Gaming Hub Incubator</h2></div>
@@ -802,6 +970,7 @@ function switchTab(name){
   document.querySelectorAll('.tab-btn').forEach(b=>{ if(b.textContent.toLowerCase().includes(name.slice(0,4))) b.classList.add('active'); });
   // lazy render charts when telemetry tab opens
   if(name==='telemetry'){ renderHabitChart(); renderSpendChart(); }
+  if(name==='outreach-log'){ loadProspects(); }
   if(name==='outreach') renderOutreachChart();
   if(name==='learning') renderLearning();
 }
@@ -1377,6 +1546,464 @@ function subscribeRealtime(){
 }
 
 // ── BOOT ──
+
+// ══════════════════════════════════════════
+// OUTREACH LOG MODULE
+// ══════════════════════════════════════════
+
+let olProspects = [];       // current page data
+let olTotalCount = 0;
+let olPage = 0;
+const OL_PAGE_SIZE = 50;
+let olCurrentFilter = 'all';
+let olCurrentMarket = 'all';
+let olSearchQuery = '';
+let olExpandedId = null;
+
+const STATUS_LABELS = {
+  queued:'Queued', sent:'Sent', replied:'Replied',
+  positive_reply:'Positive', negative:'Negative',
+  bounced:'Bounced', signed_up:'Signed Up', paying:'Paying', dead:'Dead'
+};
+
+// ── LOAD PROSPECTS ──
+async function loadProspects() {
+  try {
+    let query = db.from('outreach_prospects')
+      .select('*', { count: 'exact' })
+      .order('created_at', { ascending: false })
+      .range(olPage * OL_PAGE_SIZE, (olPage + 1) * OL_PAGE_SIZE - 1);
+
+    // Search
+    if (olSearchQuery) {
+      query = query.or(`business_name.ilike.%${olSearchQuery}%,email.ilike.%${olSearchQuery}%`);
+    }
+
+    // Market filter
+    if (olCurrentMarket !== 'all') {
+      query = query.eq('market', olCurrentMarket);
+    }
+
+    // Status filter
+    if (olCurrentFilter === 'followup') {
+      // Follow-ups due — handled client-side after fetch
+      query = query.in('status', ['sent', 'replied']);
+    } else if (olCurrentFilter !== 'all') {
+      const statuses = olCurrentFilter.split(',');
+      if (statuses.length === 1) query = query.eq('status', olCurrentFilter);
+      else query = query.in('status', statuses);
+    }
+
+    // Exclude do_not_contact
+    query = query.eq('do_not_contact', false);
+
+    const { data, count, error } = await query;
+    if (error) throw error;
+
+    let rows = data || [];
+
+    // Follow-up filter: client-side logic
+    if (olCurrentFilter === 'followup') {
+      const now = Date.now();
+      rows = rows.filter(p => {
+        if (!p.first_sent_at) return false;
+        if (['negative','bounced','dead','positive_reply','signed_up','paying'].includes(p.status)) return false;
+        const days = (now - new Date(p.first_sent_at).getTime()) / 86400000;
+        return (days >= 3 && !p.followup_1_sent) ||
+               (days >= 7 && !p.followup_2_sent) ||
+               (days >= 14 && !p.followup_3_sent);
+      });
+    }
+
+    olProspects = rows;
+    olTotalCount = count || rows.length;
+    renderProspectTable();
+    loadOlStats();
+  } catch(e) {
+    console.warn('Prospects load failed:', e);
+    document.getElementById('ol-body').innerHTML = '<div class="ol-empty">Could not load prospects. Check Supabase connection.</div>';
+  }
+}
+
+// ── STATS ──
+async function loadOlStats() {
+  try {
+    const today = new Date().toISOString().slice(0,10);
+    const weekAgo = new Date(Date.now() - 7*86400000).toISOString();
+
+    // Queued
+    const { count: queued } = await db.from('outreach_prospects')
+      .select('*', { count:'exact', head:true })
+      .eq('status','queued').eq('do_not_contact',false);
+
+    // Sent today
+    const { count: sentToday } = await db.from('outreach_prospects')
+      .select('*', { count:'exact', head:true })
+      .eq('status','sent')
+      .gte('first_sent_at', today);
+
+    // Replies today
+    const { count: repliesToday } = await db.from('outreach_prospects')
+      .select('*', { count:'exact', head:true })
+      .in('status', ['replied','positive_reply','negative'])
+      .gte('updated_at', today);
+
+    // Signed up this week
+    const { count: signedWeek } = await db.from('outreach_prospects')
+      .select('*', { count:'exact', head:true })
+      .in('status', ['signed_up','paying'])
+      .gte('updated_at', weekAgo);
+
+    animateCount('ol-queued',      queued || 0);
+    animateCount('ol-sent-today',  sentToday || 0);
+    animateCount('ol-replies-today', repliesToday || 0);
+    animateCount('ol-signed-week', signedWeek || 0);
+  } catch(e) { console.warn('Stats failed', e); }
+}
+
+function animateCount(id, target) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const start = parseInt(el.textContent) || 0;
+  const diff = target - start;
+  if (diff === 0) return;
+  const duration = 200;
+  const startTime = Date.now();
+  const tick = () => {
+    const elapsed = Date.now() - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    el.textContent = Math.round(start + diff * progress);
+    if (progress < 1) requestAnimationFrame(tick);
+  };
+  requestAnimationFrame(tick);
+}
+
+// ── RENDER TABLE ──
+function renderProspectTable() {
+  const body = document.getElementById('ol-body');
+  if (!olProspects.length) {
+    body.innerHTML = '<div class="ol-empty">No prospects found. Add your first prospect to get started.</div>';
+    updatePagination(0);
+    return;
+  }
+
+  body.innerHTML = olProspects.map(p => {
+    const daysSince = p.first_sent_at
+      ? Math.floor((Date.now() - new Date(p.first_sent_at).getTime()) / 86400000)
+      : null;
+    const followupDue = isFollowupDue(p);
+    const daysLabel = daysSince !== null
+      ? (followupDue ? `⚡ ${daysSince}d — follow-up due` : `${daysSince}d ago`)
+      : '—';
+
+    const statusClass = `sc-${p.status}`;
+    const expanded = olExpandedId === p.id;
+
+    // Determine which quick actions to show based on status
+    const canMarkSent     = p.status === 'queued';
+    const canMarkReplied  = ['sent','followup'].includes(p.status);
+    const canMarkPositive = ['sent','replied'].includes(p.status);
+    const canMarkDead     = !['dead','paying'].includes(p.status);
+
+    return `<div class="ol-row" id="row-${p.id}">
+      <div class="ol-row-main" onclick="toggleExpand('${p.id}')">
+        <div>
+          <div class="ol-biz-name">${escHtml(p.business_name)}</div>
+          <div class="ol-owner">${escHtml(p.owner_name||'Owner')} · ${escHtml(p.email)}</div>
+        </div>
+        <div class="ol-market-chip-wrap">
+          <span class="ol-market-chip ${(p.market||'UK').toLowerCase()}">${p.market||'UK'}</span>
+        </div>
+        <div><span class="status-chip ${statusClass}">${STATUS_LABELS[p.status]||p.status}</span></div>
+        <div class="ol-days-wrap">
+          <span class="ol-days ${followupDue?'due':'fine'}">${daysLabel}</span>
+        </div>
+        <div class="ol-quick-actions" onclick="event.stopPropagation()">
+          ${canMarkSent    ? `<button class="ol-qa-btn" onclick="markSent('${p.id}')">✉ Sent</button>` : ''}
+          ${canMarkReplied ? `<button class="ol-qa-btn replied" onclick="markStatus('${p.id}','replied')">↩ Reply</button>` : ''}
+          ${canMarkPositive? `<button class="ol-qa-btn positive" onclick="markStatus('${p.id}','positive_reply')">★ +ve</button>` : ''}
+          ${canMarkDead    ? `<button class="ol-qa-btn dead" onclick="markStatus('${p.id}','dead')">× Dead</button>` : ''}
+        </div>
+      </div>
+      <div class="ol-expand ${expanded?'show':''}" id="expand-${p.id}">
+        <div class="ol-expand-grid">
+          <div class="ol-field"><label>Source</label><span>${p.source||'—'}</span></div>
+          <div class="ol-field"><label>Email Status</label><span>${p.email_status||'—'}</span></div>
+          <div class="ol-field"><label>Website</label><span>${p.website?`<a href="${escHtml(p.website)}" target="_blank" style="color:var(--accent)">${escHtml(p.website)}</a>`:'—'}</span></div>
+          <div class="ol-field"><label>First Sent</label><span>${p.first_sent_at?new Date(p.first_sent_at).toLocaleDateString('en-GB'):'Not sent yet'}</span></div>
+          <div class="ol-field"><label>Created</label><span>${new Date(p.created_at).toLocaleDateString('en-GB')}</span></div>
+          <div class="ol-field"><label>Attributed To</label><span>${p.attributed_to === userIds.zidyep ? 'Zidyep' : p.attributed_to === userIds.ebewe ? 'Ebewe' : '—'}</span></div>
+        </div>
+        <div class="ol-followup-flags">
+          <span class="ol-fu-flag ${p.followup_1_sent?'sent':isFollowupDue(p,1)?'due':''}" onclick="markFollowup('${p.id}',1)">FU-1 (Day 3)${p.followup_1_sent?' ✓':''}</span>
+          <span class="ol-fu-flag ${p.followup_2_sent?'sent':isFollowupDue(p,2)?'due':''}" onclick="markFollowup('${p.id}',2)">FU-2 (Day 7)${p.followup_2_sent?' ✓':''}</span>
+          <span class="ol-fu-flag ${p.followup_3_sent?'sent':isFollowupDue(p,3)?'due':''}" onclick="markFollowup('${p.id}',3)">FU-3 (Day 14)${p.followup_3_sent?' ✓':''}</span>
+        </div>
+        <div style="margin-top:10px;">
+          <label style="font-size:10px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;display:block;margin-bottom:5px;">Notes</label>
+          <textarea class="ol-notes-input" rows="2" onblur="saveNotes('${p.id}',this.value)">${escHtml(p.notes||'')}</textarea>
+        </div>
+        <div style="margin-top:10px;display:flex;gap:8px;">
+          <button class="ol-qa-btn" onclick="markStatus('${p.id}','signed_up')">→ Signed Up</button>
+          <button class="ol-qa-btn positive" onclick="markStatus('${p.id}','paying')">💰 Paying</button>
+          <button class="ol-qa-btn" onclick="markStatus('${p.id}','bounced')" style="color:#fb923c;border-color:rgba(249,115,22,.4)">Bounced</button>
+          <button class="ol-qa-btn dead" onclick="markStatus('${p.id}','negative')">Negative</button>
+          <button class="ol-qa-btn dead" style="margin-left:auto" onclick="deleteProspect('${p.id}')">🗑 Delete</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+
+  updatePagination(olTotalCount);
+}
+
+function toggleExpand(id) {
+  if (olExpandedId === id) { olExpandedId = null; }
+  else { olExpandedId = id; }
+  renderProspectTable();
+}
+
+function updatePagination(total) {
+  const start = olPage * OL_PAGE_SIZE + 1;
+  const end = Math.min((olPage + 1) * OL_PAGE_SIZE, total);
+  document.getElementById('ol-page-info').textContent = total > 0
+    ? `${start}–${end} of ${total} prospects` : '0 prospects';
+  document.getElementById('ol-prev').disabled = olPage === 0;
+  document.getElementById('ol-next').disabled = end >= total;
+}
+
+function olPage(dir) {
+  olPage = Math.max(0, olPage + dir);
+  loadProspects();
+}
+
+function escHtml(s) {
+  if (!s) return '';
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ── FILTERS ──
+function olFilter(el) {
+  document.querySelectorAll('.ol-filter-chips .chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  olCurrentFilter = el.dataset.filter;
+  olPage = 0;
+  loadProspects();
+}
+
+function olMarket(market, el) {
+  document.querySelectorAll('.market-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  olCurrentMarket = market;
+  olPage = 0;
+  loadProspects();
+}
+
+let olSearchTimer;
+function olSearch() {
+  clearTimeout(olSearchTimer);
+  olSearchTimer = setTimeout(() => {
+    olSearchQuery = document.getElementById('ol-search').value.trim();
+    olPage = 0;
+    loadProspects();
+  }, 300);
+}
+
+// ── FOLLOW-UP LOGIC ──
+function isFollowupDue(p, which) {
+  if (!p.first_sent_at) return false;
+  if (['negative','bounced','dead','positive_reply','signed_up','paying'].includes(p.status)) return false;
+  const days = (Date.now() - new Date(p.first_sent_at).getTime()) / 86400000;
+  if (which === 1) return days >= 3  && !p.followup_1_sent;
+  if (which === 2) return days >= 7  && !p.followup_2_sent;
+  if (which === 3) return days >= 14 && !p.followup_3_sent;
+  // Any due
+  return (days >= 3 && !p.followup_1_sent) ||
+         (days >= 7 && !p.followup_2_sent) ||
+         (days >= 14 && !p.followup_3_sent);
+}
+
+// ── ACTIONS ──
+async function markSent(id) {
+  try {
+    await db.from('outreach_prospects').update({
+      status: 'sent',
+      first_sent_at: new Date().toISOString(),
+      updated_at: new Date().toISOString()
+    }).eq('id', id);
+    toast('Marked as sent ✓', 'success');
+    loadProspects();
+  } catch(e) { toast('Update failed', 'error'); }
+}
+
+async function markStatus(id, status) {
+  try {
+    await db.from('outreach_prospects').update({
+      status,
+      updated_at: new Date().toISOString()
+    }).eq('id', id);
+
+    // Increment daily reply counter if it's a reply
+    if (['replied','positive_reply','negative'].includes(status)) {
+      const today = todayKey();
+      const hist = appState.outreach[currentUser].history;
+      const idx = hist.findIndex(h => h.date === today);
+      if (idx >= 0) hist[idx].replies = (hist[idx].replies || 0) + 1;
+      else hist.push({ date: today, sent: 0, replies: 1 });
+      await persist();
+      renderOutreach(currentUser);
+    }
+
+    toast(`Status → ${STATUS_LABELS[status] || status}`, 'success');
+    loadProspects();
+  } catch(e) { toast('Update failed', 'error'); }
+}
+
+async function markFollowup(id, num) {
+  const p = olProspects.find(r => r.id === id);
+  if (!p) return;
+  // Only mark the earliest unsent followup
+  const field = `followup_${num}_sent`;
+  if (p[field]) { toast('Already marked sent', 'error'); return; }
+  try {
+    await db.from('outreach_prospects').update({
+      [field]: true,
+      updated_at: new Date().toISOString()
+    }).eq('id', id);
+    // Increment sent counter
+    const today = todayKey();
+    const hist = appState.outreach[currentUser].history;
+    const idx = hist.findIndex(h => h.date === today);
+    if (idx >= 0) hist[idx].sent = (hist[idx].sent || 0) + 1;
+    else hist.push({ date: today, sent: 1, replies: 0 });
+    await persist();
+    renderOutreach(currentUser);
+    toast(`Follow-up ${num} marked sent ✓`, 'success');
+    loadProspects();
+  } catch(e) { toast('Update failed', 'error'); }
+}
+
+async function saveNotes(id, notes) {
+  try {
+    await db.from('outreach_prospects').update({ notes, updated_at: new Date().toISOString() }).eq('id', id);
+  } catch(e) {}
+}
+
+async function deleteProspect(id) {
+  if (!confirm('Delete this prospect? This cannot be undone.')) return;
+  try {
+    await db.from('outreach_prospects').delete().eq('id', id);
+    toast('Prospect deleted', 'success');
+    loadProspects();
+  } catch(e) { toast('Delete failed', 'error'); }
+}
+
+// ── ADD PROSPECT ──
+function openAddProspect() {
+  ['p-biz','p-owner','p-email','p-web','p-notes'].forEach(id => {
+    const el = document.getElementById(id); if (el) el.value = '';
+  });
+  document.getElementById('ol-dup-warn').classList.remove('show');
+  document.getElementById('addProspectModal').style.display = 'flex';
+}
+
+function closeProspectModal(e) {
+  if (e.target.id === 'addProspectModal') document.getElementById('addProspectModal').style.display = 'none';
+}
+
+async function saveProspect() {
+  const biz    = document.getElementById('p-biz').value.trim();
+  const email  = document.getElementById('p-email').value.trim().toLowerCase();
+  const owner  = document.getElementById('p-owner').value.trim() || 'Owner';
+  const market = document.getElementById('p-market').value;
+  const source = document.getElementById('p-source').value;
+  const estatus= document.getElementById('p-estatus').value;
+  const web    = document.getElementById('p-web').value.trim();
+  const notes  = document.getElementById('p-notes').value.trim();
+
+  if (!biz || !email) { toast('Business name and email are required', 'error'); return; }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { toast('Invalid email format', 'error'); return; }
+
+  // Check duplicate
+  const { data: existing } = await db.from('outreach_prospects')
+    .select('id,created_at').eq('user_id', currentUserId).eq('email', email).single();
+
+  if (existing) {
+    const days = Math.floor((Date.now() - new Date(existing.created_at).getTime()) / 86400000);
+    const warn = document.getElementById('ol-dup-warn');
+    warn.textContent = `Already in your log — added ${days} days ago.`;
+    warn.classList.add('show');
+    return;
+  }
+
+  try {
+    await db.from('outreach_prospects').insert({
+      user_id: currentUserId,
+      attributed_to: currentUserId,
+      business_name: biz, owner_name: owner, email,
+      market, source, email_status: estatus,
+      website: web, notes,
+      status: 'queued'
+    });
+    document.getElementById('addProspectModal').style.display = 'none';
+    toast(`${biz} added ✓`, 'success');
+    loadProspects();
+  } catch(e) {
+    toast('Failed to save — ' + (e.message || 'check connection'), 'error');
+  }
+}
+
+// ── BULK IMPORT ──
+function openBulkImport() {
+  document.getElementById('bulk-csv').value = '';
+  document.getElementById('bulk-result').textContent = '';
+  document.getElementById('bulkImportModal').style.display = 'flex';
+}
+function closeBulkModal(e) {
+  if (e.target.id === 'bulkImportModal') document.getElementById('bulkImportModal').style.display = 'none';
+}
+
+async function runBulkImport() {
+  const raw = document.getElementById('bulk-csv').value.trim();
+  if (!raw) { toast('Paste some CSV rows first', 'error'); return; }
+
+  const lines = raw.split('\n').map(l => l.trim()).filter(Boolean);
+  const rows = [];
+  const skipped = [];
+
+  for (const line of lines) {
+    const parts = line.split(',').map(p => p.trim());
+    if (parts.length < 3) { skipped.push(line); continue; }
+    const [biz, ownerName, email, market, source] = parts;
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { skipped.push(line); continue; }
+    rows.push({
+      user_id: currentUserId, attributed_to: currentUserId,
+      business_name: biz || 'Unknown', owner_name: ownerName || 'Owner',
+      email: email.toLowerCase(),
+      market: market || 'UK', source: source || 'google_maps',
+      status: 'queued'
+    });
+  }
+
+  if (!rows.length) { toast('No valid rows found', 'error'); return; }
+
+  let imported = 0, dupes = 0;
+  // Insert in batches of 20
+  for (let i = 0; i < rows.length; i += 20) {
+    const batch = rows.slice(i, i + 20);
+    const { data, error } = await db.from('outreach_prospects')
+      .upsert(batch, { onConflict: 'user_id,email', ignoreDuplicates: true })
+      .select();
+    imported += data ? data.length : 0;
+    dupes += batch.length - (data ? data.length : 0);
+  }
+
+  document.getElementById('bulk-result').textContent =
+    `Imported ${imported} prospects. ${dupes} duplicates skipped. ${skipped.length} invalid rows skipped.`;
+  loadProspects();
+  toast(`${imported} prospects imported`, 'success');
+}
+
 // ══════════════════════════════════════════
 // NOTIFICATION SYSTEM
 // ══════════════════════════════════════════
@@ -1659,6 +2286,61 @@ async function boot(){
 
 boot();
 </script>
+
+
+<!-- ADD PROSPECT MODAL -->
+<div class="modal-overlay" id="addProspectModal" style="display:none" onclick="closeProspectModal(event)">
+  <div class="modal ol-modal">
+    <h3>Add Prospect</h3>
+    <div class="ol-dup-warn" id="ol-dup-warn"></div>
+    <div class="ol-modal-grid">
+      <div class="ol-modal-field"><label>Business Name *</label><input type="text" id="p-biz" placeholder="Smith & Sons Roofing"/></div>
+      <div class="ol-modal-field"><label>Owner Name</label><input type="text" id="p-owner" placeholder="Owner"/></div>
+      <div class="ol-modal-field full"><label>Email *</label><input type="email" id="p-email" placeholder="owner@smithroofing.co.uk"/></div>
+      <div class="ol-modal-field">
+        <label>Market</label>
+        <select id="p-market"><option value="UK">UK</option><option value="US">US</option></select>
+      </div>
+      <div class="ol-modal-field">
+        <label>Source</label>
+        <select id="p-source">
+          <option value="google_maps">Google Maps</option>
+          <option value="apollo">Apollo</option>
+          <option value="hunter">Hunter</option>
+          <option value="checkatrade">Checkatrade</option>
+        </select>
+      </div>
+      <div class="ol-modal-field">
+        <label>Email Status</label>
+        <select id="p-estatus">
+          <option value="verified">Verified</option>
+          <option value="risky">Risky</option>
+          <option value="guessed">Guessed</option>
+        </select>
+      </div>
+      <div class="ol-modal-field"><label>Website</label><input type="text" id="p-web" placeholder="https://…"/></div>
+      <div class="ol-modal-field full"><label>Notes</label><textarea id="p-notes" placeholder="Anything useful…"></textarea></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-modal-cancel" onclick="document.getElementById('addProspectModal').style.display='none'">Cancel</button>
+      <button class="btn-modal-save" onclick="saveProspect()">Save Prospect</button>
+    </div>
+  </div>
+</div>
+
+<!-- BULK IMPORT MODAL -->
+<div class="modal-overlay" id="bulkImportModal" style="display:none" onclick="closeBulkModal(event)">
+  <div class="modal ol-modal">
+    <h3>Bulk Import Prospects</h3>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:12px;">Paste CSV rows — one per line:<br><span style="color:var(--accent);font-family:monospace;font-size:11px;">business_name,owner_name,email,market,source</span></p>
+    <textarea class="bulk-textarea" id="bulk-csv" placeholder="Smith Roofing,John,john@smithroofing.co.uk,UK,google_maps&#10;Jones Tiles,Owner,info@jonestiles.co.uk,UK,checkatrade"></textarea>
+    <div class="bulk-result" id="bulk-result"></div>
+    <div class="modal-actions">
+      <button class="btn-modal-cancel" onclick="document.getElementById('bulkImportModal').style.display='none'">Cancel</button>
+      <button class="btn-modal-save" onclick="runBulkImport()">Import</button>
+    </div>
+  </div>
+</div>
 
 <!-- NOTIFICATION DROPDOWN -->
 <div class="notif-dropdown" id="notifDropdown">
